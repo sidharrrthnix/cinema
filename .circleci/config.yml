@@ -51,12 +51,12 @@ jobs:
           command: |
             if [ "${CURRENT_BRANCH}" == "master" ]
             then
-              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://cinema-production12 --delete
+              aws --region eu-west-2 s3 sync ~/repo/build s3://cinema-production12 --delete
             elif [ "${CURRENT_BRANCH}" == "staging" ]
             then
-              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://$cinema-staging12 --delete
+              aws --region eu-west-2 s3 sync ~/repo/build s3://$cinema-staging12 --delete
             else
-              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://$cinema-develop --delete
+              aws --region eu-west-2 s3 sync ~/repo/build s3://$cinema-develop --delete
             fi
 
   deploy-to-aws-cloudfront:
