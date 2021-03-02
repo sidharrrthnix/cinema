@@ -48,7 +48,7 @@ deploy-to-aws-s3:
           echo "Build Successful"
     - run:
         name: Deploy to AWS s3
-        command: |
+        command: 
         if ["${CIRCLE_BRANCH}" == "master"]
         then
           aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_PRODUCTION} --delete
@@ -87,7 +87,7 @@ deploy-to-aws-cloudfront:
           echo "Build Successful"
     - run:
         name: Deploy to AWS Cloudfront
-        command: |
+        command: 
           aws configure set preview.cloudfront true
           if ["${CIRCLE_BRANCH}" == "master"]
           then
