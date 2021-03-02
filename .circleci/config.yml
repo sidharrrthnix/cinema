@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: Show current branch
-          command: echo ${CURRENT_BRANCH}
+          command: echo ${CIRCLE_BRANCH}
       - restore_cache:
           keys:
             - app-{{checksum "package.json"}}
@@ -49,10 +49,10 @@ jobs:
       - run:
           name: Deploy to AWS s3
           command: |
-            if [ "${CURRENT_BRANCH}" == "master" ]
+            if [ "${CIRCLE_BRANCH}" == "master" ]
             then
               aws --region eu-west-2 s3 sync ~/repo/build s3://cinema-production12 --delete
-            elif [ "${CURRENT_BRANCH}" == "staging" ]
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]
             then
               aws --region eu-west-2 s3 sync ~/repo/build s3://$cinema-staging12 --delete
             else
@@ -67,7 +67,7 @@ jobs:
       - checkout
       - run:
           name: Show current branch
-          command: echo ${CURRENT_BRANCH}
+          command: echo ${CIRCLE_BRANCH}
       - run:
           name: Installing AWS CLI
           working_directory: /
@@ -86,10 +86,10 @@ jobs:
       - run:
           name: Deploy to AWS Cloudfront
           command: aws configure set preview.cloudfront true
-            if [ "${CURRENT_BRANCH}" == "master" ]
+            if [ "${CIRCLE_BRANCH}" == "master" ]
             then
             aws cloudfront create-invalidation --distribution-id ${PROD_DIST_ID} --paths /\*
-            elif [ "${CURRENT_BRANCH}" == "staging" ]
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]
             then
             aws cloudfront create-invalidation --distribution-id ${STAGING_DIST_ID} --paths /\*
             else
