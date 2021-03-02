@@ -49,10 +49,10 @@ deploy-to-aws-s3:
     - run:
         name: Deploy to AWS s3
         command: |
-        if ["${CURRENT_BRANCH}" == "master"]
+        if ["${CURRENT_BRANCH}" == "master"]:
         then
           aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_PRODUCTION} --delete
-        elif ["${CURRENT_BRANCH}" == "STAGING"]
+        elif ["${CURRENT_BRANCH}" == "STAGING"]:
         then 
           aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_STAGING} --delete
 
@@ -89,10 +89,10 @@ deploy-to-aws-cloudfront:
         name: Deploy to AWS Cloudfront
         command: |
           aws configure set preview.cloudfront
-          if ["${CURRENT_BRANCH}" == "master"]
+          if ["${CURRENT_BRANCH}" == "master"]:
           then
             aws cloudfront create-invalidation --distribution-id ${PROD_DIST_ID} --paths /\*
-          elif ["${CURRENT_BRANCH}" =="staging"]
+          elif ["${CURRENT_BRANCH}" =="staging"]:
           then
             aws cloudfront create-invalidation --distribution-id ${STAGING_DIST_ID} --paths /\*
           else
