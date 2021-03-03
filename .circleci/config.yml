@@ -50,34 +50,81 @@ jobs:
       - *restore-cache
       - *install-dependencies
       - *save-cache
-
-  deploy-to-heroku:
+  linting:
     executor: app-executor
     steps:
       - checkout
       - *show-current-branch-name
+      - *restore-cache
+      - run:
+          name: Run linting
+          command: npm run lint
 
+  deploy-to-aws-s3:
+    executor: app-executor
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *install-aws-cli
+      - *build-project
       - run:
           name: Deploy to AWS s3
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]
             then
-              git push https://heroku:$HEROKU_API_KEY@git.heroku.com/cinema-app-prod.git ${CIRCLE_BRANCH}:master -f
+              aws --region eu-west-2 s3 sync ~/repo/build s3://cinema-production12 --delete
             elif [ "${CIRCLE_BRANCH}" == "staging" ]
             then
-              git push https://heroku:$HEROKU_API_KEY@git.heroku.com/cinema-app-stage.git ${CIRCLE_BRANCH}:master -f
+              aws --region eu-west-2 s3 sync ~/repo/build s3://$cinema-staging12 --delete
             else
-              git push https://heroku:$HEROKU_API_KEY@git.heroku.com/cinema-app-develope.git ${CIRCLE_BRANCH}:master -f
+              aws --region eu-west-2 s3 sync ~/repo/build s3://$cinema-develop --delete
+            fi
+
+  deploy-to-aws-cloudfront:
+    executor: app-executor
+    steps:
+      - checkout
+      - *show-current-branch-name
+      - *install-aws-cli
+      - *build-project
+      - run:
+          name: Deploy to AWS Cloudfront
+          command: aws configure set preview.cloudfront true
+            if [ "${CIRCLE_BRANCH}" == "master" ]
+            then
+            aws cloudfront create-invalidation --distribution-id ${PROD_DIST_ID} --paths /\*
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]
+            then
+            aws cloudfront create-invalidation --distribution-id ${STAGING_DIST_ID} --paths /\*
+            else
+            aws cloudfront create-invalidation --distribution-id ${DEV_DIST_ID} --paths /\*
             fi
 
 workflows:
   build_and_deploy:
     jobs:
       - build
-
-      - deploy-to-heroku:
+      - linting:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - develop
+                - staging
+                - master
+      - deploy-to-aws-s3:
+          requires:
+            - linting
+          filters:
+            branches:
+              only:
+                - develop
+                - staging
+                - master
+      - deploy-to-aws-cloudfront:
+          requires:
+            - deploy-to-aws-s3
           filters:
             branches:
               only:
