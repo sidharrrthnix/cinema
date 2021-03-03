@@ -59,10 +59,10 @@ jobs:
       - run:
           name: Deploy to Heroku
           command: |
-          if ["${CIRCLE_BRANCH}" == "master"]
+          if [ "${CIRCLE_BRANCH}" == "master" ]
           then
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/cinema-app-prod.git ${CIRCLE_BRANCH}:master -f
-          elif ["${CIRCLE_BRANCH}" == "staging"]
+          elif [ "${CIRCLE_BRANCH}" == "staging" ]
           then
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/cinema-app-stage.git ${CIRCLE_BRANCH}:master -f
           else
