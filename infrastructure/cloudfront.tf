@@ -1,7 +1,3 @@
-########################
-# CLOUDFRONT RESOURCES
-########################
-
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     custom_origin_config {
@@ -57,4 +53,3 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   tags = local.common_tags
 }
-
