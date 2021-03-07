@@ -1,7 +1,7 @@
 variable "prefix" {
-  default = "sid-cinema"
+  default = "sid-cinema-app"
 }
 
 variable "project" {
-  default = "cinema-app"
+  default = "cinema-app-react"
 }

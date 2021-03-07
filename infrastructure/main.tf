@@ -1,12 +1,12 @@
 provider "aws" {
-  region = "eu-central-1"
+  region = "eu-west-2"
 }
 
 terraform {
   backend "s3" {
-    bucket  = "app-cinema-tf-state"
+    bucket  = "app-cinema-tf-state-local"
     key     = "app-cinema.tfstate"
-    region  = "eu-central-1"
+    region  = "eu-west-2"
     encrypt = true
   }
 }
@@ -17,6 +17,6 @@ locals {
     Environment = terraform.workspace
     Project     = var.project
     ManageBy    = "Terraform"
-    Owner       = "Uzochukwu Eddie Odozi"
+    Owner       = "Sidharrth"
   }
 }
