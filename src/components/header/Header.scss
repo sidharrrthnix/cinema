@@ -18,7 +18,7 @@
 
 .header-navbar {
   display: grid;
-  grid-template: 'link . . menu search';
+  grid-template: "link . . menu search";
   grid-template-columns: max-content 1fr 1fr max-content max-content;
   height: 50px;
   line-height: 50px;
@@ -188,7 +188,7 @@
     background-color: #fff;
     width: 100%;
     height: calc(100vh - 55px);
-    transform: translate(-100%);
+    transform: translate(-101%);
     text-align: justify;
     overflow: hidden;
     z-index: 10;

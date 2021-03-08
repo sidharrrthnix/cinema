@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import logo from '../../assets/cinema-logo.svg';
-import './Header.scss';
 
-const Header_List = [
+import './Header.scss';
+import logo from '../../assets/cinema-logo.svg';
+
+const HEADER_LIST = [
   {
     id: 1,
     iconClass: 'fas fa-film',
@@ -28,19 +29,23 @@ const Header_List = [
     type: 'upcoming'
   }
 ];
+
 const Header = () => {
-  const [navClass, setNavClass] = useState(false);
-  const [menuClass, setMenuClass] = useState(false);
+  let [navClass, setNavClass] = useState(false);
+  let [menuClass, setMenuClass] = useState(false);
 
   const toggleMenu = () => {
-    setNavClass(!navClass);
-    setMenuClass(!menuClass);
+    menuClass = !menuClass;
+    navClass = !navClass;
+    setNavClass(navClass);
+    setMenuClass(menuClass);
     if (navClass) {
       document.body.classList.add('header-nav-open');
     } else {
       document.body.classList.remove('header-nav-open');
     }
   };
+
   return (
     <>
       <div className="header-nav-wrapper">
@@ -48,24 +53,22 @@ const Header = () => {
         <div className="header-navbar">
           <div className="header-image">
             <img src={logo} alt="" />
-            cine
           </div>
-          <div onClick={() => toggleMenu()} className={`${menuClass ? 'header-menu-toggle is-active' : 'header-menu-toggle'}`} id="header-mobile-menu">
+          <div className={`${menuClass ? 'header-menu-toggle is-active' : 'header-menu-toggle'}`} id="header-mobile-menu" onClick={() => toggleMenu()}>
             <span className="bar"></span>
             <span className="bar"></span>
             <span className="bar"></span>
           </div>
           <ul className={`${navClass ? 'header-nav header-mobile-nav' : 'header-nav'}`}>
-            {Header_List.map((data) => (
+            {HEADER_LIST.map((data) => (
               <li key={data.id} className="header-nav-item">
                 <span className="header-list-name">
                   <i className={data.iconClass}></i>
                 </span>
                 &nbsp;
-                <span className="header=list-name">{data.name}</span>
+                <span className="header-list-name">{data.name}</span>
               </li>
             ))}
-
             <input className="search-input" type="text" placeholder="Search for a movie" />
           </ul>
         </div>
