@@ -19,7 +19,7 @@ const Slideshow = (props) => {
     if (auto) {
       const timeInterval = setInterval(() => {
         autoMoveSlide();
-      }, 3000);
+      }, 5000);
       setSliderInterval(timeInterval);
 
       return () => {
